@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class CSVParts {
 
@@ -52,5 +53,14 @@ public class CSVParts {
             data.add(new ArrayList<>(Arrays.asList(row.split(delimiter))));
         }
         return data;
+    }
+
+    public static String getMergedCsv(Path firstFile, Path secondFile) throws IOException {
+        StringJoiner sj = new StringJoiner("\n");
+        Files.readAllLines(firstFile).forEach(sj::add);
+        List<String> secondFileContents = Files.readAllLines(secondFile);
+        secondFileContents.remove(0); // remove second header
+        secondFileContents.forEach(sj::add);
+        return sj.toString();
     }
 }
