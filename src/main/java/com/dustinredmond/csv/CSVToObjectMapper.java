@@ -58,8 +58,6 @@ public class CSVToObjectMapper {
                 throw new RuntimeException(String.format("Unable to set (%s) to field of " +
                         "type %s. Try using a primitive data type or simple" +
                         " type (e.g. java.lang.String)", data, type));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
             }
         }
     }
