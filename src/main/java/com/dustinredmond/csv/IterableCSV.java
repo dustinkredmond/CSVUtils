@@ -11,9 +11,12 @@ public class IterableCSV {
     private final List<String> csvPayload = new ArrayList<>();
     private int index = 0;
 
-    public void loadFile(Path path) throws IOException {
-
-        csvPayload.addAll(Files.readAllLines(path));
+    public IterableCSV(Path path) throws RuntimeException {
+        try {
+            csvPayload.addAll(Files.readAllLines(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String getNextLine() {
