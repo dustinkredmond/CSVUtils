@@ -1,14 +1,14 @@
 package com.dustinredmond.csv.test;
 
-import com.dustinredmond.csv.ObjectCSVMapper;
+import com.dustinredmond.csv.ObjectToCSVMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestObjectCSVMapper {
+public class TestObjectToCSVMapper {
 
     public static void main(String[] args) {
-        ObjectCSVMapper mapper = ObjectCSVMapper.getInstance();
+        ObjectToCSVMapper mapper = ObjectToCSVMapper.getInstance();
         Student s = new Student("John", "Smith");
         System.out.println("Mapping Student('John', 'Smith') to String");
         System.out.println(mapper.mapToCsv(s, ",", true));

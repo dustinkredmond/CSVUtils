@@ -1,23 +1,20 @@
 package com.dustinredmond.csv;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 
-public class ObjectCSVMapper {
+public class ObjectToCSVMapper {
 
-    private static ObjectCSVMapper instance;
-    public static ObjectCSVMapper getInstance() {
+    private static ObjectToCSVMapper instance;
+    public static ObjectToCSVMapper getInstance() {
         if (instance == null) {
-            instance = new ObjectCSVMapper();
-            return instance;
-        } else {
-            return instance;
+            instance = new ObjectToCSVMapper();
         }
+        return instance;
     }
 
-    private ObjectCSVMapper() { super(); }
+    private ObjectToCSVMapper() { super(); }
 
     public <T> String mapToCsv(T o, String delimiter, boolean addHeader) {
         if (o == null || delimiter == null || delimiter.trim().isEmpty()) {
@@ -55,16 +52,14 @@ public class ObjectCSVMapper {
         }
 
         StringBuilder reportBuilder = new StringBuilder();
-
         if (addHeader) {
             StringJoiner headerJoiner = new StringJoiner(delimiter);
             for (Field field : objects.get(0).getClass().getDeclaredFields()) {
                 headerJoiner.add(field.getName());
             }
             reportBuilder.append(headerJoiner.toString());
+            reportBuilder.append(NEW_LINE);
         }
-
-        reportBuilder.append(NEW_LINE);
 
         for (Object o : objects) {
             reportBuilder.append(mapToCsv(o, delimiter, false));
