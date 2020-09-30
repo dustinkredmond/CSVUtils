@@ -14,16 +14,27 @@ public class CSVParts {
         return new ArrayList<>(Arrays.asList(firstLine.split(delimiter)));
     }
 
+    public static List<String> getHeader(String csvContent, String delimiter) {
+        return new ArrayList<>(Arrays.asList(csvContent.split("\n")[0].split(delimiter)));
+    }
+
     public static List<List<String>> getData(Path path, String delimiter) throws IOException {
         List<List<String>> dataList = new ArrayList<>();
-        boolean isFirstPass = true;
         for (String line : Files.readAllLines(path)) {
-            if (isFirstPass) {
-                isFirstPass = false;
-                continue;
-            }
             dataList.add(Arrays.asList(line.split(delimiter)));
         }
+        dataList.remove(0); // remove header
         return dataList;
+    }
+
+    public static List<List<String>> getData(String csvContent, String delimiter) {
+        List<String> dataRows = new ArrayList<>(Arrays.asList(csvContent.split("\n")));
+        dataRows.remove(0); // remove header
+
+        List<List<String>> data = new ArrayList<>();
+        for (String row : dataRows) {
+            data.add(new ArrayList<>(Arrays.asList(row.split(delimiter))));
+        }
+        return data;
     }
 }
