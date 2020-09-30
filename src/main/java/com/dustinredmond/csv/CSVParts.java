@@ -16,7 +16,12 @@ public class CSVParts {
 
     public static List<List<String>> getData(Path path, String delimiter) throws IOException {
         List<List<String>> dataList = new ArrayList<>();
+        boolean isFirstPass = true;
         for (String line : Files.readAllLines(path)) {
+            if (isFirstPass) {
+                isFirstPass = false;
+                continue;
+            }
             dataList.add(Arrays.asList(line.split(delimiter)));
         }
         return dataList;
