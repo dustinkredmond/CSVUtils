@@ -22,11 +22,18 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a easily-iterable delimited file
+ */
 public class IterableCSV {
 
-    private final List<String> csvPayload = new ArrayList<>();
-    private int index = 0;
-
+    /**
+     * Takes in a delimited file and loads it into memory.
+     * Calls to {@code new IterableCSV(someFilePath).getNextLine()}
+     * will return a representation of the next line of data.
+     * @param path A path to a delimited file
+     * @throws RuntimeException If the path is unable to be read
+     */
     public IterableCSV(Path path) throws RuntimeException {
         try {
             csvPayload.addAll(Files.readAllLines(path));
@@ -35,7 +42,15 @@ public class IterableCSV {
         }
     }
 
+    /**
+     * Returns the next line in the delimited file, or
+     * null if the end has been reached.
+     * @return The next line of the delimited file
+     */
     public String getNextLine() {
         return (index >= csvPayload.size()) ? null : csvPayload.get(index++);
     }
+
+    private final List<String> csvPayload = new ArrayList<>();
+    private int index = 0;
 }

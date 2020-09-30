@@ -23,6 +23,11 @@ import java.util.StringJoiner;
 public class ObjectToCSVMapper {
 
     private static ObjectToCSVMapper instance;
+
+    /**
+     * Get the instance of ObjectToCSVMapper
+     * @return the ObjectToCSVMapper
+     */
     public static ObjectToCSVMapper getInstance() {
         if (instance == null) {
             instance = new ObjectToCSVMapper();
@@ -32,19 +37,28 @@ public class ObjectToCSVMapper {
 
     private ObjectToCSVMapper() { super(); }
 
-    public <T> String mapToCsv(T o, String delimiter, boolean addHeader) {
-        if (o == null || delimiter == null || delimiter.trim().isEmpty()) {
+    /**
+     * Converts a single Object to a delimited format
+     * @param object An object to convert to a delimited String
+     * @param delimiter Delimiter to be used
+     * @param addHeader If true, the returned String will include a header
+     * @param <T> The parameterized type
+     * @return String of delimited text
+     * @throws RuntimeException if any error occurs during reflective processes
+     */
+    public <T> String mapToCsv(T object, String delimiter, boolean addHeader) throws RuntimeException {
+        if (object == null || delimiter == null || delimiter.trim().isEmpty()) {
             throw new UnsupportedOperationException("Object and delimiter must both be not null.");
         }
 
         StringJoiner headerJoiner = new StringJoiner(delimiter);
         StringJoiner dataJoiner = new StringJoiner(delimiter);
-        for (Field field : o.getClass().getDeclaredFields()) {
+        for (Field field : object.getClass().getDeclaredFields()) {
             if (addHeader)
                 headerJoiner.add(field.getName());
             try {
                 field.setAccessible(true);
-                dataJoiner.add(field.get(o).toString());
+                dataJoiner.add(field.get(object).toString());
             } catch (IllegalAccessException e) {
                 throw new RuntimeException(e);
             } finally {
@@ -58,6 +72,15 @@ public class ObjectToCSVMapper {
         }
     }
 
+    /**
+     * Converts Objects to a delimited format
+     * @param objects Objects to convert to a delimited String
+     * @param delimiter Delimiter to be used
+     * @param addHeader If true, the returned String will include a header
+     * @param <T> The parameterized type
+     * @return A delimited String representing the objects
+     * @throws RuntimeException if any error occurs during reflective processes
+     */
     public <T> String mapToCsv(List<T> objects, String delimiter, boolean addHeader) throws RuntimeException {
         if (objects == null || objects.size() == 0) {
             throw new UnsupportedOperationException("Supplied objects must be non null and " +

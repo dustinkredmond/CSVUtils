@@ -20,8 +20,20 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A mapper used to convert basic delimited text into
+ * Java Objects.
+ */
 public class CSVToObjectMapper {
 
+    /**
+     * Converts entities in delimited text to Java Objects.
+     * @param csv Delimited String containing data that represents Java Objects
+     * @param delimiter The delimiter used in `csv`
+     * @param theClass The Java Object which the CSV entries will be mapped to.
+     * @param <T> The returned parameterized type.
+     * @return A list of Objects constructed from the delimited text.
+     */
     public <T> List<T> map(String csv, String delimiter, Class<T> theClass) {
         List<String> headerList = CSVParts.getHeader(csv, delimiter);
         List<List<String>> data = CSVParts.getData(csv, delimiter);
@@ -69,6 +81,7 @@ public class CSVToObjectMapper {
             field.setShort(o, Short.parseShort(data));
         } else {
             try {
+                // Now we assume our object is a java.lang.Object
                 field.set(o, data);
             } catch (IllegalArgumentException e) {
                 throw new RuntimeException(String.format("Unable to set (%s) to field of " +
